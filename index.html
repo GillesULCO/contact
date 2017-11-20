@@ -64,7 +64,15 @@
     <!-- BEGIN - Les tests -->
     <script>
       QUnit.test("header tests", function (assert) {
-        assert.ok(false);
+          var header = $("#contacts > table > tbody > tr > th");
+          var tagsAllowed = ["First name", "Last name", "Phones", "Mails", "Tags", "Actions"];
+          var count = 0;
+          header.each(function(){
+              if(tagsAllowed[count] === this.innerHTML){
+                  count++;
+              }
+          });
+        assert.ok(count === 6);
       });
 
       QUnit.test("list tests", function (assert) {
