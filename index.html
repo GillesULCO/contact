@@ -152,7 +152,24 @@
         });
 
         QUnit.test("sort contact tests", function (assert) {
-            assert.ok(false);
+            var ButtonSort = $("#contacts #button_sort");
+            ButtonSort.click();
+
+            var lastNamesRead = [];
+            var iterator = Contact.Contacts.instance().iterator();
+            while (iterator.hasNext()) {
+                var line = iterator.next();
+                lastNamesRead.push(line.lastName());
+            }
+
+            lastNamesRead.sort();
+
+            var lastNames = $("#contacts > table > tbody > tr:nth-child(n+1) > td#cellLastName");
+            var count = 0;
+            lastNames.each(function(){
+                assert.ok(this.innerHTML === lastNamesRead[count++]);
+            });
+
         });
     </script>
     <!-- END - Les tests -->
