@@ -128,7 +128,27 @@
         });
 
         QUnit.test("remove contact tests", function (assert) {
-            assert.ok(false);
+            var ButtonFirstContact = $("#contacts > table > tbody > tr:nth-child(2) > td:last-child > .btn");
+            ButtonFirstContact.click();
+
+            var names = [["Jacques", "DURAND"], ["Pierre", "DUPONT"], ["Jean", "DUPOND"]];
+            var iterator = Contact.Contacts.instance().iterator();
+            var count = 0;
+            while (iterator.hasNext()) {
+                var line = iterator.next();
+                assert.ok(names[count][0] === line.firstName() && names[count][1] === line.lastName());
+                count++;
+            }
+
+            assert.ok(count >= 2);
+
+            iterator = Contact.Contacts.instance().iterator();
+            var firstLine = iterator.next();
+            assert.ok(firstLine.firstName() !== "Eric");
+            assert.ok(firstLine.lastName() !== "RAMAT");
+            assert.ok(firstLine.phones().length === 1 && firstLine.phones()[0].number() !== "0616642258");
+            assert.ok(firstLine.mails().length === 0);
+            assert.ok(firstLine.tags().length === 0);
         });
 
         QUnit.test("sort contact tests", function (assert) {
