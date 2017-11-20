@@ -29,67 +29,74 @@
 
     <!-- BEGIN - La fonction de construction -->
     <script>
-      var build = function () {
-        var model = new Contact.Model();
-        var view = new Contact.View(model);
-        var controller = new Contact.Controller(model, view);
-      };
+        var build = function () {
+            var model = new Contact.Model();
+            var view = new Contact.View(model);
+            var controller = new Contact.Controller(model, view);
+        };
 
-      var init = function () {
-        var contact = new Contact.Builder().createContactWithProfessionalMobile(
-          Contact.Gender.MR, 'Eric', 'RAMAT', '0616642258');
+        var init = function () {
+            var contact = new Contact.Builder().createContactWithProfessionalMobile(
+                Contact.Gender.MR, 'Eric', 'RAMAT', '0616642258');
 
-        contact.addPhone(new Contact.Phone('0321465676', Contact.PhoneCategory.PRO, Contact.PhoneType.PHONE));
-        contact.addMail(new Contact.Mail('ramat@lisic.univ-littoral.fr', Contact.MailCategory.PRO));
-        contact.addMail(new Contact.Mail('eric.ramat@gmail.com', Contact.MailCategory.PERSO));
-        contact.addTag('prof');
-        Contact.Contacts.instance().add(contact);
-        Contact.Contacts.instance().add(new Contact.Builder().createContactWithProfessionalMobile(
-          Contact.Gender.MR, 'Jacques', 'DURAND', '0699785487'));
-        Contact.Contacts.instance().add(new Contact.Builder().createContactWithProfessionalMobile(
-          Contact.Gender.MR, 'Pierre', 'DUPONT', '0636532535'));
-        Contact.Contacts.instance().add(new Contact.Builder().createContactWithProfessionalMobile(
-          Contact.Gender.MR, 'Jean', 'DUPOND', '0612343000'));
-      }
+            contact.addPhone(new Contact.Phone('0321465676', Contact.PhoneCategory.PRO, Contact.PhoneType.PHONE));
+            contact.addMail(new Contact.Mail('ramat@lisic.univ-littoral.fr', Contact.MailCategory.PRO));
+            contact.addMail(new Contact.Mail('eric.ramat@gmail.com', Contact.MailCategory.PERSO));
+            contact.addTag('prof');
+            Contact.Contacts.instance().add(contact);
+            Contact.Contacts.instance().add(new Contact.Builder().createContactWithProfessionalMobile(
+                Contact.Gender.MR, 'Jacques', 'DURAND', '0699785487'));
+            Contact.Contacts.instance().add(new Contact.Builder().createContactWithProfessionalMobile(
+                Contact.Gender.MR, 'Pierre', 'DUPONT', '0636532535'));
+            Contact.Contacts.instance().add(new Contact.Builder().createContactWithProfessionalMobile(
+                Contact.Gender.MR, 'Jean', 'DUPOND', '0612343000'));
+        }
     </script>
     <!-- END - La fonction de construction -->
 
     <script>
-      $(document).ready(function () {
-        init();
-        build();
-      });
+        $(document).ready(function () {
+            init();
+            build();
+        });
     </script>
 
     <!-- BEGIN - Les tests -->
     <script>
-      QUnit.test("header tests", function (assert) {
-          var header = $("#contacts > table > tbody > tr > th");
-          var tagsAllowed = ["First name", "Last name", "Phones", "Mails", "Tags", "Actions"];
-          var count = 0;
-          header.each(function(){
-              if(tagsAllowed[count] === this.innerHTML){
-                  count++;
-              }
-          });
-        assert.ok(count === 6);
-      });
+        QUnit.test("header tests", function (assert) {
+            var header = $("#contacts > table > tbody > tr > th");
+            var tagsAllowed = ["First name", "Last name", "Phones", "Mails", "Tags", "Actions"];
+            var count = 0;
+            header.each(function () {
+                if (tagsAllowed[count] === this.innerHTML) {
+                    count++;
+                }
+            });
+            assert.ok(count === 6);
+        });
 
-      QUnit.test("list tests", function (assert) {
-        assert.ok(false);
-      });
+        QUnit.test("list tests", function (assert) {
+            var names = [["Eric", "RAMAT"], ["Jacques", "DURAND"], ["Pierre", "DUPONT"], ["Jean", "DUPOND"]];
+            var iterator = Contact.Contacts.instance().iterator();
+            var count = 0;
+            while (iterator.hasNext()) {
+                var line = iterator.next();
+                assert.ok(names[count][0] === line.firstName() && names[count][1] === line.lastName());
+                count ++;
+            }
+        });
 
-      QUnit.test("first entry tests", function (assert) {
-        assert.ok(false);
-      });
+        QUnit.test("first entry tests", function (assert) {
+            assert.ok(false);
+        });
 
-      QUnit.test("remove contact tests", function (assert) {
-        assert.ok(false);
-      });
+        QUnit.test("remove contact tests", function (assert) {
+            assert.ok(false);
+        });
 
-      QUnit.test("sort contact tests", function (assert) {
-        assert.ok(false);
-      });
+        QUnit.test("sort contact tests", function (assert) {
+            assert.ok(false);
+        });
     </script>
     <!-- END - Les tests -->
 
