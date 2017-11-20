@@ -82,12 +82,49 @@
             while (iterator.hasNext()) {
                 var line = iterator.next();
                 assert.ok(names[count][0] === line.firstName() && names[count][1] === line.lastName());
-                count ++;
+                count++;
             }
         });
 
         QUnit.test("first entry tests", function (assert) {
-            assert.ok(false);
+            var iterator = Contact.Contacts.instance().iterator();
+            var firstline = iterator.next();
+
+            assert.ok(firstline.firstName() === "Eric");
+            assert.ok(firstline.lastName() === "RAMAT");
+            assert.ok(firstline.phones()[0].number() === "0616642258" && firstline.phones()[1].number() === "0321465676");
+            assert.ok(firstline.mails()[0].address() === "ramat@lisic.univ-littoral.fr" && firstline.mails()[1].address() === "eric.ramat@gmail.com");
+            assert.ok(firstline.tags()[0] === "prof");
+
+            var firstLine = $("#contacts > table > tbody > tr:nth-child(2) > td");
+
+            var datas = [
+                firstline.firstName(),
+                firstline.lastName(),
+                firstline.phones()[0].number(),
+                firstline.phones()[1].number(),
+                firstline.mails()[0].address(),
+                firstline.mails()[1].address(),
+                firstline.tags()[0]
+            ];
+
+            var count = 0;
+            firstLine.each(function () {
+                if(count === datas.length){
+                    return;
+                }
+                if(count === 2){
+                    assert.ok(this.innerHTML === datas[count] + "[PRO][MOBILE]/" +datas[count+1] + "[PRO][PHONE]");
+                    count++
+                }else if(count === 4) {
+                    assert.ok(this.innerHTML === datas[count] + "[PRO]/" + datas[count+1] + "[PERSO]");
+                    count++;
+                }else{
+                    assert.ok(datas[count] === this.innerHTML);
+                }
+                count ++;
+            });
+
         });
 
         QUnit.test("remove contact tests", function (assert) {
